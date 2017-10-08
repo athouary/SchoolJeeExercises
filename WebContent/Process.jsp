@@ -3,21 +3,24 @@
     
 <% 
 // Store data in session variables
-if(request.getParameter("execution") != null) {
-	if(!request.getParameter("attribute").equals("")) {
-		if(request.getParameter("value").equals("")){
-			session.removeAttribute(request.getParameter("attribute"));
-		}
-		else {
-			session.setAttribute(request.getParameter("attribute"),request.getParameter("value"));
+String in = "0" ; 
+if(session.getAttribute("Connected")!=null) {
+	in = "A";
+	if(request.getParameter("execution") != null) {
+		if(!request.getParameter("attribute").equals("")) {
+			if(request.getParameter("value").equals("")){
+				session.removeAttribute(request.getParameter("attribute"));
+			}
+			else {
+				session.setAttribute(request.getParameter("attribute"),request.getParameter("value"));
+			}
 		}
 	}
-	session = request.getSession(false);
 }
 // Just logged in
 else if(request.getParameter("login")!= null && request.getParameter("password")!=null){
 	if(request.getParameter("login").equals("Aux") && request.getParameter("password").equals("pass")) {
-		session = request.getSession();
+		session.setAttribute("Connected","true");
 		session.setMaxInactiveInterval(30);
 	}
 	else response.sendRedirect("Login.jsp");
@@ -34,6 +37,7 @@ else {
 <title>Process</title>
 </head>
 <body>
+<%= in %>
 	<form action='Process.jsp' method='POST'>
 		Attribute : <input type='text' name='attribute'/>
 		Value : <input type='text' name='value'/>
