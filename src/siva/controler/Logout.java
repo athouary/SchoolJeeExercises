@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Logout
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private HttpSession session;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,7 +37,7 @@ public class Logout extends HttpServlet {
 				"<body>");
 			//String param=en.nextElement();
 			//String value=request.getParameter(param);
-			response.getWriter().println("Logged Out");
+			response.getWriter().println("Logged Out <a href='Login'>Go to log in page.</a>");
 		response.getWriter().println("</body></html>");
 	}
 
@@ -43,6 +45,9 @@ public class Logout extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.session = request.getSession(false);
+		if(this.session !=null)
+			this.session.invalidate();
 		doGet(request, response);
 	}
 

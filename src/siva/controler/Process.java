@@ -51,26 +51,33 @@ public class Process extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Store data in session variables
-		if(request.getParameter("execution") != null) {
-			if(!request.getParameter("attribute").equals("")) {
-				if(request.getParameter("value").equals("")){
-					session.removeAttribute(request.getParameter("attribute"));
+		// Store data in session variable
+		this.session = request.getSession(false);
+		if(this.session !=null) {
+			// Si clic sur Execute
+			if(request.getParameter("execution") != null) {
+				if(!request.getParameter("attribute").equals("")) {
+					if(request.getParameter("value").equals("")){
+						session.removeAttribute(request.getParameter("attribute"));
+					}
+					else {
+						session.setAttribute(request.getParameter("attribute"),request.getParameter("value"));
+					}
 				}
-				else {
-					session.setAttribute(request.getParameter("attribute"),request.getParameter("value"));
-				}
+				doGet(request, response);
 			}
-			this.session = request.getSession(false);
-			doGet(request, response);
 		}
 		// Just logged in
-		else if(request.getParameter("login").equals("Aux") && request.getParameter("password").equals("pass")) {
-			this.session = request.getSession();
-			this.session.setMaxInactiveInterval(30);
-			doGet(request, response);
+		else if(request.getParameter("login") != null && request.getParameter("password")!= null) {
+			if(request.getParameter("login").equals("Aux") && request.getParameter("password").equals("pass")) {
+				this.session = request.getSession();
+				this.session.setMaxInactiveInterval(30);
+				doGet(request, response);
+			}
+			else 
+				response.sendRedirect("Login");
 		}
-		// Log in failed
+		// Log in failed or not supposed to be here
 		else {
 			response.sendRedirect("Login");
 		}
