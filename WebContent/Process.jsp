@@ -20,6 +20,7 @@ else if(request.getParameter("login")!= null && request.getParameter("password")
 		session = request.getSession();
 		session.setMaxInactiveInterval(30);
 	}
+	else response.sendRedirect("Login.jsp");
 }
 // Log in failed
 else {
@@ -30,7 +31,7 @@ else {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Process</title>
 </head>
 <body>
 	<form action='Process.jsp' method='POST'>
